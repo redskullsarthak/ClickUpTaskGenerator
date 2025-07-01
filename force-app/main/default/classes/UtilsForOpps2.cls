@@ -1,12 +1,15 @@
-public class UtilsForOppsClickUp {
-    List<Opportunity> oppList = new List<Opportunity>();
+public with sharing class UtilsForOpps2 {
+    Opportunity oppList;
     String WorkSpaceName;
     String SpaceName;
     String ListName;
-    public UtilsForOppsClickUp(List<Opportunity> opp){
-        this.oppList = opp;
-    }
-    public UtilsForOppsClickUp(List<Opportunity> opp, String WorkSpace, String SpaceName, String ListName){
+    // public UtilsForOpps2(List<Opportunity> opp){
+    //     this.oppList = opp;
+    //     this.workspaceName=opp.workspaceName;
+    //     this.spaceName=opp.spaceName;
+    //     this.listName=opp.listName;
+    // }
+    public UtilsForOpps2(Opportunity opp, String WorkSpace, String SpaceName, String ListName){
         this.oppList = opp;
         this.WorkSpaceName = WorkSpace;
         this.SpaceName = SpaceName;
@@ -32,7 +35,7 @@ public class UtilsForOppsClickUp {
         }
         return null; 
     }
-
+   // create workspace , space and list generatots also  (for cases that do not have a clickUp hierarchy named in the opportunity field)
     public void mainGenerator(){
         if (WorkSpaceName == null) WorkSpaceName = 'CRM Testing Workspace';
         if (SpaceName == null) SpaceName = 'Team Space';
@@ -68,13 +71,10 @@ public class UtilsForOppsClickUp {
             System.debug('List ID not found for list: ' + ListName);
             return;
         }
-
-
-
-        for(Opportunity o : oppList){
+        // generate task for oppOList
             Map<String, Object> payload = new Map<String, Object>{
-                'name' => 'Follow up on failed opportunity: ' + o.Name,
-                'description' => 'Please follow up with the opportunity owner. Status of Opportunity ' + o.Name + ' needs review.'
+                'name' => 'Follow up on failed opportunity: ' + oppList.Name,
+                'description' => 'Please follow up with the opportunity owner. Status of Opportunity ' + oppList.Name + ' needs review.'
             };
             Http hp = new Http();
             HttpRequest req = new HttpRequest();
@@ -82,9 +82,9 @@ public class UtilsForOppsClickUp {
             req.setMethod('POST');
             req.setHeader('Content-Type', 'application/json');
             req.setBody(JSON.serialize(payload));
-
             HttpResponse res = hp.send(req);
             System.debug('Task creation response: ' + res.getBody());
-        }
+        
     }
+
 }
