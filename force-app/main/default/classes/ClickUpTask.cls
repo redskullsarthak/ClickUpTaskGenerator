@@ -7,7 +7,6 @@ public class ClickUpTask {
         req.setEndpoint('callout:ClickUpAPI/team');
         req.setMethod('GET');
         HttpResponse firstRes = http.send(req);
-
         if (firstRes.getStatusCode() != 200) {
             System.debug('Failed to retrieve team ID');
             return;

@@ -7,9 +7,10 @@ trigger ClickUpTaskForOpps on Opportunity (after update) {
         }
     }
     if (!closedLostOpps.isEmpty()) {
-        System.enqueueJob(new ClickUpTaskForOpportunity(closedLostOpps));
+        LogHelper.log('is not empty');
+         System.enqueueJob(new ClickUpTaskForOpportunity(closedLostOpps));
     }
-    //, null, null, null
+
 }
 
 // improvemets
